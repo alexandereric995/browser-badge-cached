@@ -1,22 +1,18 @@
 var browserBadge = require('browser-badge');
-var mkdirp = require('mkdirp');
 var fs = require('fs');
 var through = require('through');
 
-function checkCacheDir (dir, cb) {
-    fs.stat(dir, function (err, stat) {
-        if (err) throw err;
-        if (!stat.isDirectory()) {
-            mkdirp(cacheDir, function (err) {
-                if (err) throw err;
-            });
-        }
-        cb();
-    });
-}
-
 function cachedBadgeFilename (browsers) {
-    return 'x.png';
+    var cacheDir = __dirname + "/badge-cache";
+    var browserNames = Object.keys(browsers).sort();
+    var fileNameParts = [];
+    browserNames.forEach(function (browserName) {
+        var browserVersions = Object.keys(browserNames[browserName]).sort();
+        browserVersions.forEach(function (browserVersion) {
+            fileNameParts.push(browserName + browserVersion + browserVersions[browserVersion] ? 's' : 'f');
+        });
+    });
+    return fileNameParts.join('-') + '.png';
 }
 
 function isCachedBadge (browsers, cb) {
@@ -27,20 +23,18 @@ function isCachedBadge (browsers, cb) {
 }
 
 module.exports = function (cacheDir) {
-    checkCacheDir(cacheDir, function () {
-        return function (browsers) {            // this function should be returned from above function
-            var out = through(function () {
-                isCachedBadge(browsers, function (isCached) {
-                    if (isCached) {
-                        fs.createReadStream(cachedBadgeFilename(browsers)).pipe(out);
-                    }
-                    else {
-                        browserBadge(browsers).pipe(out);
-                    }
-                });
+    return function (browsers) {
+        var out = through(function () {
+            isCachedBadge(browsers, function (isCached) {
+                if (isCached) {
+                    fs.createReadStream(cachedBadgeFilename(browsers)).pipe(out);
+                }
+                else {
+                    browserBadge(browsers).pipe(out);
+                }
             });
-            return out;
-        }
-    });
+        });
+        return out;
+    }
 };
 
