@@ -12,7 +12,7 @@ function cachedBadgeFilename (browsers) {
             fileNameParts.push(browserName + browserVersion + browserVersions[browserVersion] ? 's' : 'f');
         });
     });
-    return fileNameParts.join('-') + '.png';
+    return cacheDir + '/' + fileNameParts.join('-') + '.png';
 }
 
 function isCachedBadge (browsers, cb) {
