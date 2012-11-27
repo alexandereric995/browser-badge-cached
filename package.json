@@ -1,0 +1,32 @@
+{
+    "name" : "browser-badge-cached",
+    "version" : "0.0.0",
+    "description" : "generate browser version compatibility badges or serve them from cache",
+    "main" : "index.js",
+    "directories" : {
+        "example" : "example"
+    },
+    "dependencies" : {
+        "browser-badge" : "~0.0.0",
+        "through" : "~2.0.0"
+    },
+    "repository" : {
+        "type" : "git",
+        "url" : "git://github.com/pkrumins/browser-badge-cached.git"
+    },
+    "homepage" : "https://github.com/pkrumins/browser-badge-cached",
+    "keywords" : [
+        "browser",
+        "badge",
+        "png",
+        "compatibility",
+        "version",
+        "cache"
+    ],
+    "author" : {
+        "name" : "Peteris Krumins",
+        "email" : "peter@catonmat.net",
+        "url" : "http://www.catonmat.net"
+    },
+    "license" : "MIT"
+}
