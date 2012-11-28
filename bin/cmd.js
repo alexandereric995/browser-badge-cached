@@ -28,5 +28,5 @@ instream.on('end', function () {
         console.error(e || err)
         process.exit(1);
     }
-    createBadgeCached(browsers).pipe(outstream);
+    createBadgeCached(__dirname + '/badge-cache')(browsers).pipe(outstream);
 });
