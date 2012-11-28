@@ -4,6 +4,7 @@
     "description" : "generate browser version compatibility badges or serve them from cache",
     "main" : "index.js",
     "directories" : {
+        "bin" : "bin",
         "example" : "example"
     },
     "dependencies" : {
