@@ -16,15 +16,20 @@ function cachedBadgeFilename (cacheDir, browsers) {
 
 function isCachedBadge (cacheDir, browsers, cb) {
     fs.stat(cachedBadgeFilename(cacheDir, browsers), function (err, stat) {
-        if (err) throw err;
-        cb(stat.isFile());
+        if (err) cb(err);
+        cb(null, stat.isFile());
     });
 }
 
 module.exports = function (cacheDir) {
     return function (browsers) {
         var out = through();
-        isCachedBadge(cacheDir, browsers, function (isCached) {
+        isCachedBadge(cacheDir, browsers, function (err, isCached) {
+            if (err) {
+               out.emit('error', err);
+               return;
+            }
+
             if (isCached) {
                 fs.createReadStream(cachedBadgeFilename(cacheDir, browsers)).pipe(out);
             }
