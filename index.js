@@ -31,7 +31,16 @@ module.exports = function (cacheDir) {
                 fs.createReadStream(cachedBadgeFilename(cacheDir, browsers)).pipe(out);
             }
             else {
-                browserBadge(browsers).pipe(out);
+                var b = browserBadge(browsers);
+                var fileName = cachedBadgeFilename(cacheDir, browsers);
+                var fileOut = fs.createWriteStream(fileName);
+                b.pipe(fileOut);
+                b.pipe(out);
+                b.on('error', function () {
+                    fs.unlink(fileName, function (err) {
+                        if (err) out.emit('error', err);
+                    });
+                }
             }
         });
         return out;
