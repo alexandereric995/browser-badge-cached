@@ -1,6 +1,7 @@
 var browserBadge = require('browser-badge');
 var fs = require('fs');
 var through = require('through');
+var path = require('path');
 
 function cachedBadgeFilename (cacheDir, browsers) {
     var browserNames = Object.keys(browsers).sort();
@@ -26,13 +27,14 @@ function isCachedBadge (cacheDir, browsers, cb) {
 module.exports = function (cacheDir) {
     return function (browsers) {
         var out = through();
+        var fileName = cachedBadgeFilename(cacheDir, browsers);
+        out.fileName = path.basename(fileName);
         isCachedBadge(cacheDir, browsers, function (isCached) {
             if (isCached) {
-                fs.createReadStream(cachedBadgeFilename(cacheDir, browsers)).pipe(out);
+                fs.createReadStream(fileName).pipe(out);
             }
             else {
                 var b = browserBadge(browsers);
-                var fileName = cachedBadgeFilename(cacheDir, browsers);
                 var fileOut = fs.createWriteStream(fileName);
                 var target = through();
                 target.pipe(fileOut);
