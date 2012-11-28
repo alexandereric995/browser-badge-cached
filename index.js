@@ -6,7 +6,7 @@ function cachedBadgeFilename (cacheDir, browsers) {
     var browserNames = Object.keys(browsers).sort();
     var fileNameParts = [];
     browserNames.forEach(function (browserName) {
-        var browserVersions = Object.keys(browserNames[browserName]).sort();
+        var browserVersions = Object.keys(browsers[browserName]).sort();
         browserVersions.forEach(function (browserVersion) {
             fileNameParts.push(browserName + browserVersion + browserVersions[browserVersion] ? 's' : 'f');
         });
