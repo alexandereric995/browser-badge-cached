@@ -8,7 +8,9 @@ function cachedBadgeFilename (cacheDir, browsers) {
     browserNames.forEach(function (browserName) {
         var browserVersions = Object.keys(browsers[browserName]).sort();
         browserVersions.forEach(function (browserVersion) {
-            fileNameParts.push(browserName + browserVersion + browserVersions[browserVersion] ? 's' : 'f');
+            var browser = browserName + browserVersion;
+            var success = browsers[browserName][browserVersion] ? 's' : 'f';
+            fileNameParts.push(browser + success);
         });
     });
     return cacheDir + '/' + fileNameParts.join('-') + '.png';
