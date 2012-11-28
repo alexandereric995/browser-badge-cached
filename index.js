@@ -34,9 +34,12 @@ module.exports = function (cacheDir) {
                 var b = browserBadge(browsers);
                 var fileName = cachedBadgeFilename(cacheDir, browsers);
                 var fileOut = fs.createWriteStream(fileName);
-                b.pipe(fileOut);
-                b.pipe(out);
-                b.on('error', function () {
+                var target = through();
+                target.pipe(fileOut);
+                target.pipe(out);
+                b.pipe(target);
+                b.on('error', function (err) {
+                    out.emit('error', err);
                     fs.unlink(fileName, function (err) {
                         if (err) out.emit('error', err);
                     });
