@@ -40,7 +40,7 @@ module.exports = function (cacheDir) {
                     fs.unlink(fileName, function (err) {
                         if (err) out.emit('error', err);
                     });
-                }
+                });
             }
         });
         return out;
