@@ -24,15 +24,14 @@ function isCachedBadge (browsers, cb) {
 
 module.exports = function (cacheDir) {
     return function (browsers) {
-        var out = through(function () {
-            isCachedBadge(browsers, function (isCached) {
-                if (isCached) {
-                    fs.createReadStream(cachedBadgeFilename(browsers)).pipe(out);
-                }
-                else {
-                    browserBadge(browsers).pipe(out);
-                }
-            });
+        var out = through();
+        isCachedBadge(browsers, function (isCached) {
+            if (isCached) {
+                fs.createReadStream(cachedBadgeFilename(browsers)).pipe(out);
+            }
+            else {
+                browserBadge(browsers).pipe(out);
+            }
         });
         return out;
     }
