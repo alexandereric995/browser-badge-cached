@@ -14,7 +14,10 @@ function cachedBadgeFilename (cacheDir, browsers) {
             fileNameParts.push(browser + success);
         });
     });
-    return cacheDir + '/' + fileNameParts.join('-') + '.png';
+    var shortFileNameParts = fileNameParts.map(function (part) {
+        return part.substr(0,1);
+    });
+    return cacheDir + '/' + shortFileNameParts.join('-') + '.png';
 }
 
 function isCachedBadge (cacheDir, browsers, cb) {
