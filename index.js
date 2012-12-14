@@ -9,15 +9,12 @@ function cachedBadgeFilename (cacheDir, browsers) {
     browserNames.forEach(function (browserName) {
         var browserVersions = Object.keys(browsers[browserName]).sort();
         browserVersions.forEach(function (browserVersion) {
-            var browser = browserName + browserVersion;
+            var browser = browserName.substr(0,1) + browserVersion;
             var success = browsers[browserName][browserVersion] ? 's' : 'f';
             fileNameParts.push(browser + success);
         });
     });
-    var shortFileNameParts = fileNameParts.map(function (part) {
-        return part.substr(0,1);
-    });
-    return cacheDir + '/' + shortFileNameParts.join('-') + '.png';
+    return cacheDir + '/' + fileNameParts.join('-') + '.png';
 }
 
 function isCachedBadge (cacheDir, browsers, cb) {
