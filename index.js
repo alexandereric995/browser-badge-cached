@@ -2,6 +2,7 @@ var browserBadge = require('browser-badge');
 var fs = require('fs');
 var through = require('through');
 var path = require('path');
+var crypto = require('crypto');
 
 function cachedBadgeFilename (cacheDir, browsers) {
     var browserNames = Object.keys(browsers).sort();
@@ -9,12 +10,14 @@ function cachedBadgeFilename (cacheDir, browsers) {
     browserNames.forEach(function (browserName) {
         var browserVersions = Object.keys(browsers[browserName]).sort();
         browserVersions.forEach(function (browserVersion) {
-            var browser = browserName.substr(0,1) + browserVersion;
+            var browser = browserName + browserVersion;
             var success = browsers[browserName][browserVersion] ? 's' : 'f';
             fileNameParts.push(browser + success);
         });
     });
-    return cacheDir + '/' + fileNameParts.join('-') + '.png';
+    var fileName = fileNameParts.join('-');
+    var fileNameHash = require('crypto').createHash('md5').update(fileName).digest('hex');
+    return cacheDir + '/' + fileNameHash + '.png';
 }
 
 function isCachedBadge (cacheDir, browsers, cb) {
