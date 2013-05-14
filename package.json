@@ -8,7 +8,7 @@
         "example" : "example"
     },
     "dependencies" : {
-        "browser-badge" : "~0.2.0",
+        "browser-badge" : "~1.1.0",
         "through" : "~2.0.0"
     },
     "repository" : {
